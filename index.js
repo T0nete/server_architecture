@@ -7,9 +7,9 @@ const port = process.env.PORT || 8000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Add employee routes
-const employees = require('./routes/employees');
-app.use('/api/employees', employees);
+// Add routes
+const posts = require('./routes/posts');
+app.use('/api', posts);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
