@@ -1,18 +1,21 @@
-const express = require('express');
-const router = express.Router();
-const posts = require('../controllers/posts');
+const express = require('express')
+const router = express.Router()
+const posts = require('../controllers/posts')
+const authenticate = require('../middlewares/authenticate')
 
 // GET /api/posts
-router.get('/posts', posts.index);
+router.get('/', posts.listPosts)
 
 // GET /api/posts/:id
-router.get('/posts/:id', posts.show);
+router.get('/:id', posts.getPostById)
 
 // POST /api/posts
-router.post('/posts', posts.create);
+router.post('/', posts.createPost)
 
 // PATCH /api/posts/:id
-router.patch('/posts/:id', posts.update);
+router.patch('/:id', posts.updatePostById)
 
 // DELETE /api/posts/:id
-router.delete('/posts/:id', posts.destroy);
+router.delete('/:id', posts.deletePostById)
+
+module.exports = router

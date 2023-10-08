@@ -1,16 +1,21 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 
-const port = process.env.PORT || 8000;
+require('dotenv').config()
+const port = process.env.PORT || 8000
 
 // Add middleware for parsing URL encoded bodies (which are usually sent by browser)
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+// Set up database
+const dbConfig = require('./config/db.config')
+dbConfig()
 
 // Add routes
-const posts = require('./routes/posts');
-app.use('/api', posts);
+const routes = require('./routes/index')
+app.use('/api', routes)
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
+  console.log(`Listening on port ${port}`)
+})
