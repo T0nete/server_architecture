@@ -1,7 +1,6 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const nodeMailer = require('nodemailer')
 
 module.exports.createUser = async (req, res) => {
   try {
@@ -82,20 +81,20 @@ module.exports.login = async (req, res) => {
       return res.status(400).json({ error: 'User not found' })
     }
 
+    // Validate if user is active
+    if (!user.active) {
+      return res.status(400).json({ error: 'Please confirm your account' })
+    }
+
     // Check password
-    const match = bcrypt.compareSync(password, user.password)
-    if (!match) {
+    const passwordMatches = bcrypt.compareSync(password, user.password)
+    if (!passwordMatches) {
       return res.status(400).json({ error: 'Password is incorrect' })
     }
 
     // Create token
     const payload = { id: user._id, name: user.name }
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1d' })
-
-    // Validate if user is active
-    if (!user.active) {
-      return res.status(400).json({ error: 'Please confirm your account' })
-    }
 
     res.status(200).json({ token })
   } catch (error) {
@@ -106,7 +105,6 @@ module.exports.login = async (req, res) => {
 
 module.exports.confirmAccount = async (req, res) => {
   try {
-    console.log('confirmAccount')
     const { id } = req.params
 
     // Update user active to true

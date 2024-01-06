@@ -10,4 +10,5 @@ router.post('/login', users.login)
 
 // PATCH /api/users/:id/confirm
 router.patch('/:id/confirm', users.confirmAccount)
+
 module.exports = router
