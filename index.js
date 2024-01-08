@@ -1,11 +1,18 @@
 const express = require('express')
 const helmet = require('helmet')
 const csrf = require('csurf')
+const rateLimit = require('express-rate-limit')
 
 const app = express()
 
 app.use(helmet())
 app.use(csrf())
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // límite de solicitudes por IP
+})
+app.use(limiter)
 
 require('dotenv').config()
 const port = process.env.PORT || 8000
