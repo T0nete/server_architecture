@@ -3,8 +3,7 @@ const helmet = require('helmet')
 
 const app = express()
 
-app.use(helmet())
-
+app.use(helmet.frameguard({ action: 'deny' }))
 require('dotenv').config()
 const port = process.env.PORT || 8000
 
